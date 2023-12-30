@@ -1,9 +1,108 @@
- const adviewMore = async(req,res)=>{
-    const userId = req.params.userid;
-    const productId = req.params.productid
-    const reason = await Return.findOne({ productid:productId })
-    const address = await addressCollection.findOne({ userid:userId }) 
-    console.log('reaons:',reason)
-    console.log('address:',address)
-    res.render('adminOrderMore',{address,reason})
-  }
+    document.getElementById('wallet-button').addEventListener('click', async () => {
+         try {
+             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked').value;
+             const paymentMode = document.getElementById('paymentMethod').value;
+             const coupencode=document.getElementById('couponCode').value;
+             const totalOverallPrice = parseFloat(document.getElementById('price').innerText.replace('₹', ''));
+             const walletAmount = parseFloat(document.getElementById('wallet-amount').innerText.replace('₹', ''));
+             console.log("totalOverallPrice:",totalOverallPrice);
+             if (totalOverallPrice > walletAmount) {
+                 msgbox.textContent = `Wallet is not enough for this purchase: `;
+                 setTimeout(() => {
+                     messageContainer.textContent = "";
+                 }, 4000);
+                 return;
+             } else {
+                 const response = await fetch('/placeOrderWithWallet', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({
+                         selectedAddress,
+                         paymentMode,
+                         totalOverallPrice,
+                         coupencode
+                     }),
+                 });
+
+                 if (response.redirected) {
+                     window.location.href = response.url;
+                 } else {
+                     console.error('Server responded with an error:', response.status);
+                     alert('An error occurred during the request');
+                 }
+             }
+         } catch (error) {
+             console.error('Error during fetch:', error);
+             alert('An error occurred during the request');
+         }
+     });
+ </script>
+
+
+
+
+
+
+
+        <script>
+    document.getElementById('wallet-button').addEventListener('click', async () => {
+        try {
+            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked').value;
+            const paymentMode = document.getElementById('paymentMethod').value;
+            const coupencode = document.getElementById('couponCode').value;
+            
+            const totalOverallPriceElement = document.getElementById('price').innerText.replace('₹', '');
+            const walletAmountElement = document.getElementById('wallet-amount').innerText.replace('₹', '');
+            
+            let totalOverallPrice = NaN;
+            let walletAmount = NaN;
+            
+            if (!isNaN(totalOverallPriceElement)) {
+                totalOverallPrice = parseFloat(totalOverallPriceElement);
+            } else {
+                console.error(`Invalid total overall price value: ${totalOverallPriceElement}`);
+            }
+            
+            if (!isNaN(walletAmountElement)) {
+                walletAmount = parseFloat(walletAmountElement);
+            } else {
+                console.error(`Invalid wallet amount value: ${walletAmountElement}`);
+            }
+            
+            console.log("totalOverallPrice:", totalOverallPrice);
+            
+            if (totalOverallPrice > walletAmount) {
+                msgbox.textContent = `Wallet is not enough for this purchase: `;
+                setTimeout(() => {
+                   messageContainer.textContent = "";
+                }, 4000);
+                return;
+            } else {
+                const response = await fetch('/placeOrderWithWallet', {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'application/json',
+                   },
+                   body: JSON.stringify({
+                       selectedAddress,
+                       paymentMode,
+                       totalOverallPrice,
+                       coupencode
+                   }),
+                });
+ 
+                if (response.redirected) {
+                   window.location.href = response.url;
+                } else {
+                   console.error('Server responded with an error:', response.status);
+                   alert('An error occurred during the request');
+                }
+            }
+        } catch (error) {
+            console.error('Error during fetch:', error);
+            alert('An error occurred during the request');
+        }
+    });
+ </script>

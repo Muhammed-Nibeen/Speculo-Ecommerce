@@ -481,50 +481,54 @@
                 rzp1.open();
                 e.preventDefault();
             }
-        </script>
+        
 
-        <script>
-           document.getElementById('wallet-button').addEventListener('click', async () => {
-                try {
-                    const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked').value;
-                    const paymentMode = document.getElementById('paymentMethod').value;
-                    const coupencode=document.getElementById('couponCode').value;
-                    const totalOverallPrice = parseFloat(document.getElementById('price').innerText.replace('₹', ''));
-                    const walletAmount = parseFloat(document.getElementById('wallet-amount').innerText.replace('₹', ''));
+        //walletpay
+        document.getElementById('wallet-button').addEventListener('click', async () => {
+         try {
+             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked').value;
+             const paymentMode = document.getElementById('paymentMethod').value;
+             const coupencode=document.getElementById('couponCode').value;
+             const totalOverallPrice = parseFloat(document.getElementById('price').innerText.replace('$', ''));
+             const orderprice = price.getAttribute('data-totalprice')
+             const walletAmount = parseFloat(document.getElementById('wallet-amount').innerText.replace('$', ''));
+        
+             console.log("walletAmount:   ",walletAmount);
+             console.log("orderprice:  ",orderprice);
+             if ((totalOverallPrice ||orderprice) > walletAmount) {
+                 msgbox.textContent = `Wallet is not enough for this purchase: `;
+                 setTimeout(() => {
+                     messageContainer.textContent = "";
+                 }, 4000);
+                 return;
+             } else {
+                 const response = await fetch('/placeOrderWithWallet', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({
+                         selectedAddress,
+                         paymentMode,
+                         totalOverallPrice,
+                         coupencode
+                     }),
+                 });
 
-                    if (totalOverallPrice > walletAmount) {
-                        msgbox.textContent = `Wallet is not enough for this purchase: `;
-                        setTimeout(() => {
-                            messageContainer.textContent = "";
-                        }, 4000);
-                        return;
-                    } else {
-                        const response = await fetch('/placeOrderWithWallet', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                selectedAddress,
-                                paymentMode,
-                                totalOverallPrice,
-                                coupencode
-                            }),
-                        });
-
-                        if (response.redirected) {
-                            window.location.href = response.url;
-                        } else {
-                            console.error('Server responded with an error:', response.status);
-                            alert('An error occurred during the request');
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error during fetch:', error);
-                    alert('An error occurred during the request');
-                }
-            });
-        </script>
+                 if (response.redirected) {
+                     window.location.href = response.url;
+                 } else {
+                     console.error('Server responded with an error:', response.status);
+                     alert('An error occurred during the request');
+                 }
+             }
+         } catch (error) {
+             console.error('Error during fetch:', error);
+             alert('An error occurred during the request');
+         }
+     });
+ </script>
+ 
 
        
     </div>

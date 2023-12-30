@@ -21,7 +21,7 @@ const admin = (req,res)=>{
   if(req.session.addata){
     res.redirect('/adminhome')
   }else{
-    res.render('adminlogin',{title:"AdminLogin"})
+    res.render('adminLogin',{title:"AdminLogin"})
   }
 }
 
