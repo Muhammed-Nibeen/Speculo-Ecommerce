@@ -11,7 +11,6 @@ const Category = require('../model/category')
 const Offer = require('../model/offer')
 // const session=require('express-session')
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 const nocache = require("nocache")
 app.use(nocache())
 
