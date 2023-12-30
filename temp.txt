@@ -1,0 +1,9 @@
+ const adviewMore = async(req,res)=>{
+    const userId = req.params.userid;
+    const productId = req.params.productid
+    const reason = await Return.findOne({ productid:productId })
+    const address = await addressCollection.findOne({ userid:userId }) 
+    console.log('reaons:',reason)
+    console.log('address:',address)
+    res.render('adminOrderMore',{address,reason})
+  }

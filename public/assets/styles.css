@@ -1,0 +1,89 @@
+
+.logo{
+  height:100px;
+  width:100%;
+  display:flex;
+  background-color:rgb(255, 255, 255);
+  justify-content:space-evenly ;
+}
+.logo img{
+  height:100px;
+  width:200px;
+}
+.logo button{
+  border: none;
+}
+.section{
+  display:flex;
+  justify-content:space-evenly ;
+  margin:20px;
+}
+
+/* login-form */
+
+.center-div{
+  padding-top: 2%;
+}
+
+.btn.btn-success{
+  padding:.4em 2em;
+}
+
+form{
+  padding: 0.3em;
+}
+
+#login.title>span{
+  font-size:0.8em;
+}
+.signup{
+  background-image: url('/img/bg-1.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+/*color of a tag in signup*/
+.Asin{
+  color:black;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+/*for Login Form*/
+
+.login{
+  height: 80vh;
+  background-image: url('/img/bg-1.jpg'); 
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#login.title>span{
+  font-size:0.8em;
+}
+
+
+/* AdminSide */
+
+.adlogin{
+  height: 95vh;
+  background-image: url('/img/bg2-image.jpg'); 
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* for latest arraival userHome */
+.primary{
+  height:50px;
+  width:auto;
+  background-color: grey;
+}
+.text{
+  font-size: 30px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+}
+
+/* for icons users */
+/* .icons{
+  height: 50px;
+  width: 30px;
+} */

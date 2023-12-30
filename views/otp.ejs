@@ -1,0 +1,42 @@
+<%-include('header')-%>
+<div class="head">
+  <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">SPECULO</a>
+  </nav>
+  <div class="logo">
+    <button><img class="img-fluid" src="img/Gucci-Logo (1).png" alt=""></button>
+    <button><img class="img-fluid" src="img/ray-ban-logo.png" alt=""></button>
+    <button><img class="img-fluid" src="img/Versace-Logo-1997.png" alt=""></button>
+  </div>
+</div> 
+<!-- Login form -->
+<div class="login">
+<div class="text-center center-div" id="login">
+  <div class="container w-25 border py-5">
+    <div class="title">
+      <h2 class="font-weight-bold">User</h2>
+      <span>OTP verificartion</span>
+      <% if(locals.message){%>
+        <div class="alter alert-success text-center">
+          <%=message%>
+        </div>
+        <% }%>
+    </div>
+    <form action="/otpVerify" method="POST" class="pt-3">
+      <div class="form-group">
+        <input type="text" class="form-control"placeholder="otp"name="otp" required>
+        <small class="form-text text-muted text-left">Enter otp</small> 
+      </div>
+      <!-- <div class="form-group">
+        <input type="password" class="form-control" name="password"placeholder="password" required>
+      </div> -->
+      <button type="submit" class="btn btn-success rounded-pill">Verify</button>
+    </form>
+    <!-- <p>Not a user yet?<a href="/reregis">Registration</a></p> -->
+  </div>
+</div>
+</div>
+<%-include('footer')-%>

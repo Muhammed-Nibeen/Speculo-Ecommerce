@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Admin Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #343a40;
+      padding-top: 20px;
+    }
+
+    .sidebar a {
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      /* Adjust the font   */
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+
+
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+
+    .content {
+      margin-left: 260px;
+      padding: 20px;
+    }
+
+    .content h2 {
+      margin-bottom: 20px;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .content table th,
+    .content table td {
+      border: 1px solid #dee2e6;
+      padding: 8px;
+    }
+
+    .content table th {
+      background-color: #343a40;
+      color: white;
+    }
+
+    #head {
+      font-size: large;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <a href="/dashUsers">Users</a>
+    <a href="/adminOrder">Orders</a>
+    <a href="/addproduct">Add Product</a>
+    <a href="/salesReport">Sales Chart</a>
+    <a href="/addcoupon">Add Coupon</a>
+    <a href="/viewCoupon">View Coupon</a>
+    <a href="/addOffer">Add Offer</a>
+    <a href="/viewOffer">View Offer</a>
+    <a href="/viewProduct">View Product</a>
+    <a href="/adCategory">Add Category</a>
+    <a href="/viewcategory">View Category</a>
+    <a href="/adminLogout"><i class="fas fa-sign-out-alt" style="font-size:20px;color:red"></i> Logout</a>
+  </div>
+  <div class="content">
+    <h id="head">Orders</h>
+    <table class="table table-striped">
+      <thead class="bg-secondary text-white">
+        <tr>
+          <th>Index</th>
+          <th>Order Id</th>
+          <th>User name</th>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Order date</th>
+          <th>Payment mode</th>
+          <th>View More</th>
+          <th>Action</th>
+
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        <% if(data.length> 0) { %>
+          <% data.forEach(function(val, index) { %>
+            <% val.productcollection.forEach(product=> { %>
+              <tr>
+                <td>
+                  <%= ((currentPage - 1) * limit) + index + 1 %>
+                </td>
+                <td>
+                  <%= generateUniqueID() %>
+                </td>
+                <td>
+                  <%= val.firstname %>
+                </td>
+                <td>
+                  <%= product.productname %>
+                </td>
+                <td>
+                  <%= product.quantity %>
+                </td>
+                <td>
+                  <%= product.price * product.quantity %>
+                </td>
+                <td>
+                  <%= product.status %>
+                </td>
+                <td>
+                  <%= new Date(val.orderdate).toLocaleDateString('en-GB',{ day:'2-digit', month:'2-digit',
+                    year:'numeric'} )%>
+                </td>
+                <td>
+                  <%= val.paymentmode %>
+                </td>
+                <td>
+                  <a href="/adviewMore/<%= val.userid %>/<%= product._id %>">
+                    <button class="btn btn-info">Details</button>
+                </td>
+                <td>
+                  <form action="/adorderpost/<%= val._id %>/<%= product._id %>" method="post" class="d-flex">
+                    <% if (product.status !=="Cancelled" && product.status !=="Delivered" && product.status !=="Returned" ) { %>
+                      <select name="newStatus" class="form-select">
+                        <option value="Default" selected hidden>Choose</option>
+                        <option value="Shipped" <% product.status==='Shipped' ? 'selected' : '' %>>Shipped</option>
+                        <option value="Delivered" <% product.status==='Delivered' ? 'selected' : '' %>>Delivered
+                        </option>
+                        <option value="Cancelled" <% product.status==='Cancelled' ? 'selected' : '' %>>Cancelled
+                        </option>
+                      </select>
+                      <button type="submit" class="btn btn-warning ms-4">Update</button>
+                      <% } else if (product.status==="Delivered" ) { %>
+                        <div class="delivered-message">
+                          Order Delivered
+                        </div>
+                        <% } else if (product.status==="Returned" ) { %>
+                          <div class="returned-message">
+                            Order Returned
+                          </div>
+                        <% } else { %>
+                          <div class="canceled-message">
+                            Order Cancelled<br>
+                            <% Reasons.forEach(value => { %>
+                              <% if (value.productid === product.productid) { %>
+                                <%= value.reason %>
+                              <% } %>
+                            <% }) %>
+                          </div>
+                          <% } %>
+                  </form>
+                </td>   
+              </tr>
+              <% }) %>
+                <% }) %>
+                  <% } %>
+      </tbody>
+    </table>
+        <!-- PAGINATION-->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center justify-content-lg-end">
+              <% if (currentPage > 1) { %>
+                  <li class="page-item mx-1">
+                      <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                          <span aria-hidden="true">«</span>
+                      </a>
+                  </li>
+              <% } %>
+      
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                  <li class="page-item mx-1 <%= i === currentPage ? 'active' : '' %>">
+                      <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                  </li>
+              <% } %>
+      
+              <% if (currentPage < totalPages) { %>
+                  <li class="page-item ms-1">
+                      <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                          <span aria-hidden="true">»</span>
+                      </a>
+                  </li>
+              <% } %>
+          </ul>
+      </nav>
+         
+       
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#updateButton').on('click', function (e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        // Get the selected value from the dropdown
+        var newStatus = $('#statusSelect').val();
+        var formUrl = $('#statusUpdateForm').attr('action'); // Get the form action URL
+
+        // AJAX request to update the status
+        $.ajax({
+          type: 'POST',
+          url: formUrl,
+          data: { newStatus: newStatus }, // Data to be sent to the server
+          success: function (response) {
+            // If the update is successful, update the EJS status dynamically
+            // Assuming 'statusText' is the element displaying the status, update it with the new value
+            $('#statusText').text(newStatus); // Replace 'statusText' with your EJS element ID/class
+          },
+          error: function (err) {
+            console.error('Error:', err);
+            // Handle errors if necessary
+          }
+        });
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

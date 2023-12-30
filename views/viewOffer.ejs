@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .sidebar a {
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px; /* Adjust the font size here */
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        .content h2 {
+            margin-bottom: 20px;
+        }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .content table th,
+        .content table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .content table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-container button {
+            margin: 5px;
+        }
+
+        .custom-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .custom-popup h2 {
+            margin-top: 0;
+        }
+
+        .popup-buttons {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .popup-buttons button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .pagination{
+            margin-top: 450px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="/dashUsers">Dashboard</a>
+        <a href="/adminOrder">Orders</a>
+        <a href="/addproduct">Add Product</a>
+        <a href="/salesReport">Sales Chart</a>
+        <a href="/addcoupon">Add Coupon</a>
+        <a href="/viewCoupon">View Coupon</a>
+        <a href="/addOffer">Add Offer</a>
+        <a href="/viewOffer">View Offer</a>
+        <a href="/viewProduct">View Product</a>
+        <a href="/adCategory">Add Category</a>
+        <a href="/viewcategory">View Category</a>
+        <a href="/adminLogout"><i class="fas fa-sign-out-alt" style="font-size:20px;color:red"></i> Logout</a>
+    </div>
+
+    <div class="content">
+        <h2>Offer List</h2>
+        <% if(typeof message !=='undefined' ) { %>
+            <div class="alert alert-danger text-center">
+                <%= message %>
+            </div>
+        <% } %>
+        <table class="table table-striped">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>ID</th>
+                    <th>Applicable Product</th>
+                    <th>Applicable Category</th>
+                    <th>Discount</th>
+                    <th>Expiry date</th>
+                    <th>isActive</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% offerlist.forEach((val,index)=>{ %>
+                    <tr>
+                        <td><%= ((currentPage - 1) * limit) + index + 1 %></td>
+                        <td><%= val.applicableProduct %></td>
+                        <td><%= val.applicableCategory.category %></td>
+                        <td><%= val.discount %></td>
+                        <td><%= new Date(val.expiryDate).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'})  %></td>
+                        <td><%= val.isActive %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+        <!-- PAGINATION-->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center justify-content-lg-end">
+                <% if (currentPage > 1) { %>
+                    <li class="page-item mx-1">
+                        <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                <% } %>
+        
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item mx-1 <%= i === currentPage ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+        
+                <% if (currentPage < totalPages) { %>
+                    <li class="page-item ms-1">
+                        <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

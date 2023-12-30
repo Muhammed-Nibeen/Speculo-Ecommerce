@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Order Confirmation</title>
+  <!-- You can link your CSS file here if needed -->
+  <style>
+    /* Example CSS for styling purposes */
+    .confirmation {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 24px;
+    }
+
+    .tickmark {
+      color: green;
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .continue-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+      color: blue;
+    }
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="confirmation">
+    <div class="tickmark">&#10004;</div>
+    <p>Your order has been confirmed!</p>
+    <a href="/userHome
+    
+    " class="continue-link">Continue Shopping</a>
+    <section class="main">
+      <p class="heading"><span class="fw-bold text-uppercase text-dark text-center">Details</span></p>
+      <div class="profile">
+        <h2>Details</h2>
+        <div class="profile-info">
+          <label for="firstname"> Name:</label>
+          <span id="username"><%= userCart.firstname %></span>
+        </div>
+        <div class="profile-info">
+          <label for="lastname">Order Id</label>
+          <span id="username"><%= generateUniqueID() %></span>
+        </div>
+        <div class="profile-info">
+          <label for="email">Transaction Id</label>
+          <span id="email"><%= generateUniqueTransactionID() %></span>
+        </div>
+  </div>
+</section>  
+</body>
+
+</html>
+
+

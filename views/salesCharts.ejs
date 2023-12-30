@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Admin Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f8f9fa;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #343a40;
+      padding-top: 20px;
+      overflow-x: hidden;
+    }
+
+    .sidebar a {
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+
+    .content {
+      margin-left: 260px;
+      padding: 20px;
+    }
+
+    .content h2 {
+      margin-bottom: 20px;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .content table th,
+    .content table td {
+      border: 1px solid #dee2e6;
+      padding: 8px;
+    }
+
+    .content table th {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 40vh;
+      width: 80vw;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding-top: 15px;
+      }
+
+      .content {
+        margin-left: 0;
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      .content table {
+        border: 0;
+      }
+
+      .content table thead {
+        display: none;
+      }
+
+      .content table,
+      .content table tbody,
+      .content table tr,
+      .content table td {
+        display: block;
+        width: 100%;
+      }
+
+      .content table tr {
+        margin-bottom: 15px;
+      }
+
+      .content table td {
+        text-align: left;
+      }
+    }
+      .form-group{
+        margin-bottom: 0;
+      }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid mt-4">
+    <div class="content bg-white">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <span>.</span>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="sidebar">
+                      <a href="/dashUsers">Users</a>
+                      <a href="/adminOrder">Orders</a>
+                      <a href="/addproduct">Add Product</a>
+                      <a href="/salesReport">Sales Chart</a>
+                      <a href="/addcoupon">Add Coupon</a>
+                      <a href="/viewCoupon">View Coupon</a>
+                      <a href="/addOffer">Add Offer</a>
+                      <a href="/viewOffer">View Offer</a>
+                      <a href="/viewProduct">View Product</a>
+                      <a href="/adCategory">Add Category</a>
+                      <a href="/viewcategory">View Category</a>
+                      <a href="/adminLogout"><i class="fas fa-sign-out-alt" style="font-size:20px;color:red"></i> Logout</a>
+                    </div>
+                  </div>
+                </div>
+            </nav>
+  
+          <div class="col-md-4 col-lg-3" >
+            <div class="form-group">
+                <label for="chartSelector" class="font-weight-bold">Select Chart:</label>
+                <select id="chartSelector" class="form-control mb-3" onchange="updateChart()">
+                    <option value="mychart1">Daily Chart</option>
+                    <option value="mychart2">Weekly Chart</option>
+                    <option value="mychart3">Yearly Chart</option>
+                </select>
+
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <div class="">
+                            <div class="col">
+                                <input type="date" name="startingdate" id="startingDate"
+                                    class="form-control">
+                            </div>
+                            <div class="col">
+                                <input type="date" name="endingdate" id="endingDate"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <br>
+                        <button class="btn btn-primary btn-block mb-"
+                            onclick="generateReport('pdf')">PDF Report</button>
+                        <button class="btn btn-primary btn-block"
+                            onclick="generateReport('excel')">Excel Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+          <div class=" col-md-8 col-lg-9">
+            <canvas id="mychart1" data-dates="<%= JSON.stringify(dates) %>" data-dailyOrder="<%=JSON.stringify(orderCounts)%>"></canvas>
+            <canvas id="mychart2" data-weekly="<%= JSON.stringify(monthdata) %>"></canvas>
+            <canvas id="mychart3" data-yearlyOrders="<%=JSON.stringify(totalOrderCount3)%>"></canvas>
+        </div>
+      </div>
+    </div>
+</div>  
+
+
+  <script>
+    function generateReport(reportType) {
+      const startingDate = document.getElementById('startingDate').value;
+      const endingDate = document.getElementById('endingDate').value;
+      if (reportType === 'pdf') {
+        // Redirect to the PDF generation route with query parameters
+        window.location.href = `/generate-pdf?startingdate=${startingDate}&endingdate=${endingDate}`;
+      } else if (reportType === 'excel') {
+        // Redirect to the Excel generation route with query parameters
+        window.location.href = `/excelReport?startingdate=${startingDate}&endingdate=${endingDate}`
+      }
+    }
+  </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const chartContainer = document.querySelector('#mychart1');
+  const rawDates = "<%=dates%>";
+  const dates = rawDates.split(',').map(date => date.split('T')[0]);
+
+  const rawDailyOrders = "<%=orderCounts%>";
+  const dailyOrders = rawDailyOrders.split(',').map(Number);
+
+  const orderEndDate = moment(dates[dates.length - 1]); // Use the last order date as the end date
+  const lastSevenDays = [];
+  let orders = [];
+  let k = 0;
+
+  // Generate labels for the last 7 days from the current date
+  for (let i = 6; i >= 0; i--) {
+    const date = orderEndDate.clone().subtract(i, 'days').format('YYYY-MM-DD');
+    let index = dates.indexOf(date);
+    if (index !== -1) {
+      orders.push(dailyOrders[index]);
+    } else {
+      orders.push(0);
+    }
+    lastSevenDays.push(date);
+  }
+
+  const ctx = document.getElementById('mychart1').getContext('2d');
+  // document.getElementById("mychart1").style.display = "none";  
+  const masspopchart1 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: lastSevenDays,
+      datasets: [{
+        label: 'Daily Orders',
+        data: orders,
+        backgroundColor: 'rgba(255, 0, 0, 0.3)',
+        barThickness: 20
+      }]
+    },
+    options: {
+      animation: {
+        duration: 2000,
+        easing: 'easeInOutQuart',
+        onProgress: function (animation) {
+          console.log("progress", animation.progress);
+        },
+        onComplete: function (animation) {
+          console.log('Animation complete');
+        }
+      }
+    }
+  });
+
+  const weeklyOrderContainer = document.querySelector('#mychart2'); // Assuming data is stored here
+
+  // Use getAttribute to retrieve the values for weekly data
+  const rawWeeklyOrders = weeklyOrderContainer.getAttribute('data-weekly');
+  const weeklyData = JSON.parse(rawWeeklyOrders);
+
+  // Get the current date and year
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+   // Months are zero-based
+
+  // Generate labels for the next 12 weeks starting from the current week
+  const weeklyLabels = Array.from({ length: 12 }, (_, index) => {
+    const year = currentYear + Math.floor((currentDate.getDate() + (index * 7)) / 365);
+    const week = Math.ceil(((currentDate.getDate() + (index * 7)) % 365) / 7);
+    return `${year}-Week${week.toString().padStart(2, '0')}`;
+  });
+
+  const ctx2 = document.getElementById('mychart2').getContext('2d');
+  document.getElementById("mychart2").style.display = "none";
+  let masspopchart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: weeklyLabels,
+      datasets: [{
+        label: 'Weekly Orders',
+        data: weeklyData,
+        backgroundColor: 'rgba(0, 0, 255, 0.3)',
+        barThickness: 20
+      }]
+    },
+    options: {
+      animation: {
+        duration: 2000,
+        easing: 'easeInOutQuart',
+        onProgress: function (animation) {
+          console.log(animation.progress);
+        },
+        onComplete: function (animation) {
+          console.log('Animation complete');
+        }
+      },
+      scales: {
+        x: {
+          type: 'category',
+          labels: weeklyLabels,
+          ticks: {
+            autoSkip: false,
+            maxRotation: 45,
+          }
+        },
+        y: {
+          beginAtZero: true,
+        }
+      }
+    }
+  });
+
+  // Assuming you have data for each month of the year
+  const yearlyOrderContainer = document.querySelector('#mychart3');
+
+  // Use getAttribute to retrieve the values
+  const rawYearlyOrders = yearlyOrderContainer.getAttribute('data-yearlyOrders');
+
+  const yearlyOrders = rawYearlyOrders.split(',').map(Number);
+
+  // Get the current year
+  const currentYear1 = new Date().getFullYear();
+
+  // Generate labels for the next five years
+  const yearlyLabels = Array.from({ length: 5 }, (_, index) => currentYear1 + index);
+
+  const ctx1 = document.getElementById('mychart3').getContext('2d');
+  document.getElementById("mychart3").style.display = "none";
+  let masspopchart3 = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: yearlyLabels,
+      datasets: [{
+        label: 'Yearly Orders',
+        data: yearlyOrders,
+        backgroundColor: ['rgba(144, 238, 144, 20)'],
+        barThickness: 20
+      }]
+    },
+    options: {
+      animation: {
+        duration: 2000,
+        easing: 'easeInOutQuart',
+        onProgress: function (animation) {
+          console.log(animation.progress);
+        },
+        onComplete: function (animation) {
+          console.log('Animation complete');
+        }
+      },
+      scales: {
+        x: {
+          type: 'category',
+          labels: yearlyLabels.map(String), 
+          ticks: {
+            autoSkip: false,
+            maxRotation: 45,
+          }
+        },
+        y: {
+          beginAtZero: true,
+        }
+      }
+    }
+  });
+});
+
+    function updateChart() {
+      var selectedChart = document.getElementById("chartSelector").value;
+
+      // Hide all charts
+      document.getElementById("mychart1").style.display = "none";
+      document.getElementById("mychart2").style.display = "none";
+      document.getElementById("mychart3").style.display = "none";
+
+      // Show the selected chart
+      document.getElementById(selectedChart).style.display = "block";
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

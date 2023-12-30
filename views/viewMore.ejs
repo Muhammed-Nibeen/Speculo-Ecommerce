@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Shop</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <!-- gLightbox gallery-->
+  <link rel="stylesheet" href="vendor/glightbox/css/glightbox.min.css">
+  <!-- Range slider-->
+  <link rel="stylesheet" href="vendor/nouislider/nouislider.min.css">
+  <!-- Choices CSS-->
+  <link rel="stylesheet" href="vendor/choices.js/public/assets/styles/choices.min.css">
+  <!-- Swiper slider-->
+  <link rel="stylesheet" href="vendor/swiper/swiper-bundle.min.css">
+  <!-- Google fonts-->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@300;400;800&amp;display=swap">
+  <!-- theme stylesheet-->
+  <link rel="stylesheet" href="/css/style.default.css" id="theme-stylesheet">
+  <!-- Custom stylesheet - for your changes-->
+  <link rel="stylesheet" href="/css/custom.css">
+  <!-- Favicon-->
+  <link rel="shortcut icon" href="">
+  <!-- Meta tags, stylesheets, and other header content -->
+  <style>
+    /* Your existing styles */
+
+    /* Styles for the form */
+
+    .header {
+      margin-left: 250px;
+    }
+
+    .main {
+      background-color: grey;
+      line-height: 1.6;
+      margin: 0px;
+      padding: 30px;
+      margin-left: 250px;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #898989;
+      padding-top: 20px;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #ddd;
+    }
+
+    .address-form {
+      background-color: grey;
+    }
+
+    /* modal */
+    /* Modal styles */
+    .modal {
+      display: none;
+      /* Hide the modal by default */
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      /* Black background with some transparency */
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 70%;
+      max-width: 400px;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Style for select and button */
+    #cancelReason,
+    button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #f44336;
+      /* Red color for the button */
+      color: white;
+    }
+
+    button:hover {
+      background-color: #d32f2f;
+      /* Darker red color on hover */
+    }
+
+    /* CSS Styles for the container */
+.order-details-container {
+  margin: 20px auto; /* Center the container horizontally */
+  max-width: 600px; /* Set maximum width for the container */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adding a subtle box-shadow */
+}
+
+.order-details {
+  /* Style for order details */
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.order-details p {
+  margin: 8px 0; /* Spacing between paragraphs */
+}
+
+.order-details strong {
+  font-weight: bold;
+}
+  </style>
+</head>
+
+<body>
+  <!-- Your existing page content -->
+  <div class="page-holder">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>User Options</h2>
+      <ul>
+        <li><a href="/showOrder">Show Orders</a></li>
+        <li><a href="/viewAddress">Show Address</a></li>
+        <li><a href="/editProfile">Edit User Details</a></li>
+        <li><a href="/changePassword">Change Password</a></li>
+        <li><a href="/addAddress">Add Address</a></li>
+      </ul>
+    </div>
+    <!-- Navbar code remains -->
+    <!-- navbar-->
+    <header class="header bg-white">
+      <div class="container px-lg-3">
+        <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><a class="navbar-brand" href="index.html"><span
+              class="fw-bold text-uppercase text-dark">Speculo</span></a>
+          <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <!-- Link--><a class="nav-link" href="/userHome">Home</a>
+              </li>
+              <li class="nav-item">
+                <!-- Link--><a class="nav-link" href="/shop2">Shop</a>
+              </li>
+              <li class="nav-item">
+                <!-- Link--><a class="nav-link" href="">Product detail</a>
+              </li>
+              <!-- <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                  <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown"><a class="dropdown-item border-0 transition-link" href="index.html">Homepage</a><a class="dropdown-item border-0 transition-link" href="shop.html">Category</a><a class="dropdown-item border-0 transition-link" href="detail.html">Product detail</a><a class="dropdown-item border-0 transition-link" href="cart.html">Shopping cart</a><a class="dropdown-item border-0 transition-link" href="checkout.html">Checkout</a></div>
+                </li> -->
+            </ul>
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item"><a class="nav-link" href="cart.html"> <i
+                    class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal"></small></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#!"> <i class="far fa-heart me-1"></i><small
+                    class="text-gray fw-normal"> </small></a></li>
+              <li class="nav-item"><a class="nav-link" href="#!"> <i
+                    class="fas fa-user me-1 text-gray fw-normal"></i></a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <!-- Edit User Details Form -->
+      <div class="content">
+        <h>View More</h>
+        <table class="table table-striped">
+          <thead class="bg-secondary text-white">
+            <tr>
+              <th>Index</th>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Image</th>
+              <th>Status</th>
+              <th>Cancel Order</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+            <% { %>
+                  <tr>
+                    <td>
+                    1
+                    </td>
+                    <td>
+                      <%= selectedProduct.productname %>
+                    </td>
+                    <td>
+                      <%= selectedProduct.quantity %>
+                    </td>
+                    <td>
+                      <%= selectedProduct.price * selectedProduct.quantity%>
+                    </td>
+                    <td>
+                      <img style="max-height: 100px; max-width: 100px;" src="<%= images.Image[0] %>" alt="no img">
+                    </td>
+                    <td id="status">
+                      <%= selectedProduct.status %>
+                    </td>
+                    <td id="actions">
+                      <% if (selectedProduct.status !=="Cancelled" && selectedProduct.status !=="Returned" ) { %>
+                        <% if (selectedProduct.status==="Delivered"){ %>
+                          <button class="cancel-button btn-danger" id="returnOrderBtn" data-toggle="modal" data-target="#confirmationModal">Return Order</button>
+                            <a href="/invoice/<%=orders.id %>/<%=selectedProduct.productid %>">
+                              <button class="btn btn-info">Get invoice</button>
+                            </a>
+                          <%} else {%>
+                        <button class="cancel-button btn-danger"
+                          onclick="showCancelConfirmation('<%= selectedProduct._id %>/<%=selectedProduct.productid %>/<%=orders._id%>')">Cancel Order</button>
+                          <% } %>
+                          <% } %>
+                          <% if (selectedProduct.status==="Cancelled"){ %>
+                          <div class="canceled-message">Order Canceled</div>
+                          <% } %>
+                    </td>
+                
+                  </tr>
+
+               
+
+                  <!-- modal --> 
+                  <form id="cancelReasonForm" action="/storeReason/<%= orders._id %>/<%= selectedProduct._id %>" method="POST">
+                  <div id="cancelConfirmationModal" class="modal">
+                    <div class="modal-content">
+                      <span class="close" onclick="closeCancelConfirmationModal()">&times;</span>
+                      <p>Please select a reason for cancellation:</p>
+                      <select id="cancelReason" name="reason">
+                        <option value="Changed my mind">Changed my mind</option>
+                        <option value="Not intrested">Not intrested</option>
+                        <!-- Add more reasons as needed -->
+                      </select>
+                      <button onclick="confirmCancellation('<%= selectedProduct._id %>')">Confirm</button>
+                    </div>
+                  </div>
+                </form>
+                      <% } %>
+          </tbody>
+        </table>
+
+        <div class="order-details-container">
+          <h2>Order Details</h2>
+          <div class="order-details">
+            <p><strong>Order Type:</strong> <%= orders.paymentmode %></p>
+            <p><strong>Order date:</strong> <%= new Date(orders.orderdate).toLocaleDateString('en-GB',{ day:'2-digit', month:'2-digit',year:'numeric'} )%></p>
+            <p><strong>First name:</strong><%= orderAddress.firstname %></p>
+            <p><strong>Address</strong><%= orderAddress.lastname %></p>
+            <p><strong>City:</strong><%= orderAddress.city %></p>
+            <p><strong>State:</strong><%= orderAddress.state %></p>
+            <p><strong>Phone:</strong><%= orderAddress.phone %></p>
+            <!-- Other fields -->
+          </div>
+        </div>
+
+      </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+    <div class="modal" id="confirmationModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Confirmation</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          
+          <!-- Modal Body -->
+          <div class="modal-body">
+            Are you sure you want to return this order?
+            Select a reason
+          </div>
+          <select id="returnReason" name="reason">
+            <option value="Size not fit">Size not fit</option>
+            <option value="Quality of product not good">Quality of product not good</option>
+            <!-- Add more reasons as needed -->
+          </select>
+          
+          <!-- Modal Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" onclick="confirmReturn('<%= selectedProduct._id %>', '<%= selectedProduct.productid %>')" data-dismiss="modal">Confirm Return</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function confirmReturn(orderId, productId) {
+        console.log("1st gotinto")
+         let reason = document.getElementById('returnReason').value;
+         let formData = new FormData();
+         formData.append('reason', reason);
+         console.log('reason',formData)
+         formData.append('orderId', orderId);
+        formData.append('productId', productId);
+      
+         fetch('/submitReturn/' + orderId, {
+             method: 'POST',
+             body: formData
+         }).then(response => {
+             if (!response.ok) {
+                 throw new Error(`HTTP error ${response.status}`);
+             }else{
+              window.location.href='/showOrder'
+             }
+             // Handle successful response here
+         }).catch(error => {
+             console.error('Error:', error);
+         });
+      }
+      </script>
+
+    <script>
+      $(document).ready(function() {
+        // Handle return order button click
+        $('#returnOrderBtn').click(function(event) {
+          event.preventDefault(); // Prevent default link behavior
+          $('#confirmationModal').modal('show'); // Show the confirmation modal
+        });
+      });
+    </script>
+
+    <!-- Include Bootstrap CSS and JavaScript -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+ 
+  <script>
+    //modal
+    function showCancelConfirmation(productId, index) {
+      console.log("1st")
+      var modal = document.getElementById('cancelConfirmationModal');
+      modal.style.display = 'block';
+    }
+
+    function closeCancelConfirmationModal() {
+      var modal = document.getElementById('cancelConfirmationModal');
+      modal.style.display = 'none';
+    }
+
+    async function confirmCancellation(productId, index) {
+      var reason = document.getElementById('cancelReason').value;
+      // Here, implement your cancellation logic using productId, index, and reason
+      // For example, you can make an API call or perform necessary actions
+      var isConfirmed = confirm;
+      if (isConfirmed) {
+        try {
+          console.log('productId:', productId);
+          console.log('reason:', reason);
+          // Make an API call to store the cancellation reason
+          // const storeReasonResponse = await fetch('/storeReason', {
+          //   method: "POST",
+          //   headers: {
+          //     "Content-Type": "application/json"
+          //   },
+          //   body: JSON.stringify({
+          //     reason: reason,
+          //     productId: productId
+          //   })
+          // });
+          // if (storeReasonResponse.ok) {
+          //   console.log("Cancellation reason stored successfully");
+          // } else {
+          //   console.error("Failed to store cancellation reason:", storeReasonResponse.status, storeReasonResponse.statusText);
+          // }
+
+          const response = await fetch(`/cancelord/${productId}`, {
+          method: "POST",
+        });
+          console.log('sss');
+          console.log("Server response:", response);
+
+          if (response.ok) {
+            console.log("Order successfully canceled");
+            window.location.href='/showOrder'
+            
+          } else {
+            console.log('error');
+            console.error("Cancellation failed. Server returned:", response.status, response.statusText);
+          }
+        } catch (error) {
+          console.error("Error during cancellation:", error);
+        }
+      }
+
+      // After cancellation logic, update the UI accordingly
+      // var actionTd = document.getElementById('actions' + index);
+      // actionTd.innerHTML = '<div class="canceled-message">Order Canceled. Reason: ' + reason + '</div>';
+
+      // Close the confirmation modal
+      closeCancelConfirmationModal();
+    }
+
+
+
+
+
+
+
+
+
+    // Function to handle order cancellation
+    // async function confirmCancel(orderId, rowIndex) {
+    //   var isConfirmed = confirm;
+    //     if (isConfirmed) {
+    //         try {
+    //             const response = await fetch("/cancelord/" + orderId, {
+    //                 method: "GET",
+    //             });
+
+    //             console.log("Server response:", response);
+
+    //             if (response.ok) {
+    //                 updateOrderStatusAndHideActions(rowIndex, "Cancelled");
+    //             } else {
+    //                 console.error("Cancellation failed. Server returned:", response.status, response.statusText);
+    //             }
+    //         } catch (error) {
+    //             console.error("Error during cancellation:", error);
+    //         }
+    //     }
+    // }
+
+    // Function to update order status in the table and hide actions
+    // function updateOrderStatusAndHideActions( newStatus) {
+    //     var statusCell = document.getElementById("status" );
+    //     if (statusCell) {
+    //         statusCell.innerHTML = newStatus;
+    //     }
+
+    //     var actionsCell = document.getElementById("actions");
+    //     if (actionsCell) {
+    //         actionsCell.innerHTML = '<div class="canceled-message">Order Canceled</div>';
+    //     }
+    // }
+  </script>
+
+</body>
+
+</html>
