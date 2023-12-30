@@ -131,7 +131,7 @@ const submitAddress = async(req,res)=>{
 const getviewAddress = async(req,res)=>{
   const user = req.session.userId
   const data = await addressCollection.find({userid: user})
-  res.render('viewaddress',{data})
+  res.render('viewAddress',{data})
 }
 
 const deleteadd = async(req,res)=>{
